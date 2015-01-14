@@ -6,7 +6,7 @@ import java.util.Random;
 public class Apple {
 
 	public final static int SIZE = 15;
-	public boolean isApple;
+	private boolean isApple;
 	private Point p;
 	private Random rand;
 	private int x;
