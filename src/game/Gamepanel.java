@@ -28,7 +28,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	public Gamepanel() {
 
 		addKeyListener(this);
-		t = new Timer(100, this); // Swingtimer 25millis
+		t = new Timer(100, this); // Swingtimer 100millis
 		t.start();
 
 		// alussa 4 palaa
@@ -91,8 +91,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Piirret��n omena
 		g.setColor(Color.RED);
-		g.fillOval(apple.getX(), apple.getY(), Apple.SIZE, Apple.SIZE);
-
+		//g.fillOval(apple.getX(), apple.getY(), Apple.SIZE, Apple.SIZE);
+		g.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(), null);
 		// Piirret��n Score
 		g.setColor(Color.GREEN);
 		g.drawString("Score: " + score, 400, 20);
@@ -109,7 +109,6 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			g.drawString("Game Over!", 200, 250);
 		}
 
-		//System.out.println("Apple x: " + apple.x + " Apple y: " + apple.y);
 	}
 
 	@Override

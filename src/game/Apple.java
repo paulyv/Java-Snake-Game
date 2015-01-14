@@ -1,22 +1,34 @@
 package game;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 public class Apple {
 
 	public final static int SIZE = 20;
+	public static BufferedImage APPLE_IMAGE;
 	private boolean isApple;
-	private Point p;
+	private Point point;
 	private Random rand;
 	private int x;
 	private int y;
-	
+		
 	public Apple() {
+		try {
+			URL image_url = this.getClass().getResource("/res/redapple.png");
+			APPLE_IMAGE = ImageIO.read(image_url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		rand = new Random();
-		p = new Point(rand.nextInt(450), rand.nextInt(450));
-		x = p.x;
-		y = p.y;
+		point = new Point(rand.nextInt(450), rand.nextInt(450));
+		x = point.x;
+		y = point.y;
 		
 		isApple = true;
 	}
@@ -40,12 +52,12 @@ public class Apple {
 	}
 
 	public Point getP() {
-		return p;
+		return point;
 	}
 	
 	public void newPoint() {
-		p = new Point(rand.nextInt(450), rand.nextInt(450));
-		x = p.x;
-		y = p.x;
+		point = new Point(rand.nextInt(450), rand.nextInt(450));
+		x = point.x;
+		y = point.x;
 	}
 }
