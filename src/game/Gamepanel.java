@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -17,16 +16,13 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 5385848097769207171L;
 	private final int SQUARE_SIZE = 20;
-	private final int APPLE_SIZE = 15;
 	private int squareXSpeed = 0;
 	private int squareYSpeed = 20;
 	private int speed = 20;
-	private Point apple;
-	private boolean isApple = true;
-	private Random rand;
 	private Timer t;
 	private int score;
-
+	private Apple apple;
+	
 	ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	public Gamepanel() {
@@ -41,10 +37,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		snakeArray.add(new Point(100, 60));
 		snakeArray.add(new Point(100, 40));
 
-		rand = new Random();
-
-		apple = new Point(rand.nextInt(450), rand.nextInt(450));
-
+		apple = new Apple();
 	}
 
 	// Render
@@ -74,11 +67,11 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 			// T�rm�ys omenan kanssa
-			if (snakeArray.get(0).x <= apple.x + 15
-					&& snakeArray.get(0).x >= apple.x - 15
-					&& snakeArray.get(0).y <= apple.y + 15
-					&& snakeArray.get(0).y >= apple.y - 15) {
-				isApple = false;
+			if (snakeArray.get(0).x <= apple.getX() + 15
+					&& snakeArray.get(0).x >= apple.getX() - 15
+					&& snakeArray.get(0).y <= apple.getY() + 15
+					&& snakeArray.get(0).y >= apple.getY() - 15) {
+				apple.setApple(false);
 				snakeArray.add(new Point((snakeArray.get(0).x), snakeArray
 						.get(0).y));
 				score += 10;
@@ -86,14 +79,14 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 
 		// Tehd��n uusi omena
-		if (!isApple) {
-			apple = new Point(rand.nextInt(450), rand.nextInt(450));
-			isApple = true;
+		if (apple.isApple() == false) {
+			apple.newPoint();
+			apple.setApple(true);
 		}
 
 		// Piirret��n omena
 		g.setColor(Color.RED);
-		g.fillOval(apple.x, apple.y, APPLE_SIZE, APPLE_SIZE);
+		g.fillOval(apple.getX(), apple.getY(), Apple.SIZE, Apple.SIZE);
 
 		// Piirret��n Score
 		g.setColor(Color.GREEN);
