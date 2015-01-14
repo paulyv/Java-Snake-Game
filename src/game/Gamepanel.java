@@ -49,8 +49,13 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Loopataan mato ja piirret��n palaset
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
-			g.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE,
-					SQUARE_SIZE);
+			g.setColor(Color.GREEN);
+			g.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
+			
+			// Pieni 1px väli madon osien väliin
+			g.setColor(Color.darkGray);
+			g.drawRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
+			
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
