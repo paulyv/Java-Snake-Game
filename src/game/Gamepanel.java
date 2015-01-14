@@ -18,7 +18,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private final int SQUARE_SIZE = 20;
 	private final int APPLE_SIZE = 15;
 	private int squareXSpeed = 0;
-	private int squareYSpeed = 0;
+	private int squareYSpeed = 20;
 	private int speed = 20;
 	private Point apple;
 	private boolean isApple = true;
@@ -35,10 +35,10 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		t.start();
 
 		// alussa 4 palaa
-		snakeArray.add(new Point(0, 0));
-		snakeArray.add(new Point(0, -1));
-		snakeArray.add(new Point(0, -2));
-		snakeArray.add(new Point(0, -3));
+		snakeArray.add(new Point(100, 100));
+		snakeArray.add(new Point(100, 80));
+		snakeArray.add(new Point(100, 60));
+		snakeArray.add(new Point(100, 40));
 
 		rand = new Random();
 
@@ -61,16 +61,28 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
 
-		// Törmäys omenan kanssa
-		if (snakeArray.get(0).x <= apple.x + 15
-				&& snakeArray.get(0).x >= apple.x - 15
-				&& snakeArray.get(0).y <= apple.y + 15
-				&& snakeArray.get(0).y >= apple.y - 15) {
-			isApple = false;
-			snakeArray
-					.add(new Point((snakeArray.get(0).x), snakeArray.get(0).y));
-			score += 10;
+		// Törmäys itsensä kanssa
+
+		for (int i = snakeArray.size() - 1; i > 1; i--) {
+			if (snakeArray.get(0).x == snakeArray.get(i).x
+					&& snakeArray.get(0).y == snakeArray.get(i).y) {
+				t.stop();
+				g.setColor(Color.RED);
+				g.drawString("Game Over!", 200, 250);
+			}
 		}
+
+			// Törmäys omenan kanssa
+			if (snakeArray.get(0).x <= apple.x + 15
+					&& snakeArray.get(0).x >= apple.x - 15
+					&& snakeArray.get(0).y <= apple.y + 15
+					&& snakeArray.get(0).y >= apple.y - 15) {
+				isApple = false;
+				snakeArray.add(new Point((snakeArray.get(0).x), snakeArray
+						.get(0).y));
+				score += 10;
+			}
+
 
 		// Tehdään uusi omena
 		if (!isApple) {

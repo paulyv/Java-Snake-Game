@@ -13,6 +13,7 @@ public class Window extends JFrame  {
 		window.setSize(new Dimension(500, 500));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setLocationRelativeTo(null);
+		window.setResizable(false);
 		window.setVisible(true);
 		window.add(panel);
 		panel.setFocusable(true);
