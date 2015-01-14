@@ -15,6 +15,7 @@ import javax.swing.Timer;
 
 public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
+	private static final long serialVersionUID = 5385848097769207171L;
 	private final int SQUARE_SIZE = 20;
 	private final int APPLE_SIZE = 15;
 	private int squareXSpeed = 0;
@@ -53,7 +54,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		g.setColor(Color.GREEN);
 
-		// Loopataan mato ja piirretään palaset
+		// Loopataan mato ja piirretï¿½ï¿½n palaset
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
 			g.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE,
 					SQUARE_SIZE);
@@ -61,7 +62,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
 
-		// Törmäys itsensä kanssa
+		// Tï¿½rmï¿½ys itsensï¿½ kanssa
 
 		for (int i = snakeArray.size() - 1; i > 1; i--) {
 			if (snakeArray.get(0).x == snakeArray.get(i).x
@@ -72,7 +73,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 
-			// Törmäys omenan kanssa
+			// Tï¿½rmï¿½ys omenan kanssa
 			if (snakeArray.get(0).x <= apple.x + 15
 					&& snakeArray.get(0).x >= apple.x - 15
 					&& snakeArray.get(0).y <= apple.y + 15
@@ -84,21 +85,21 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			}
 
 
-		// Tehdään uusi omena
+		// Tehdï¿½ï¿½n uusi omena
 		if (!isApple) {
 			apple = new Point(rand.nextInt(450), rand.nextInt(450));
 			isApple = true;
 		}
 
-		// Piirretään omena
+		// Piirretï¿½ï¿½n omena
 		g.setColor(Color.RED);
 		g.fillOval(apple.x, apple.y, APPLE_SIZE, APPLE_SIZE);
 
-		// Piirretään Score
+		// Piirretï¿½ï¿½n Score
 		g.setColor(Color.GREEN);
 		g.drawString("Score: " + score, 400, 20);
 
-		// Game over jos törmätään seinään
+		// Game over jos tï¿½rmï¿½tï¿½ï¿½n seinï¿½ï¿½n
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
 			g.setColor(Color.RED);
@@ -110,14 +111,14 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			g.drawString("Game Over!", 200, 250);
 		}
 
-		System.out.println("Apple x: " + apple.x + " Apple y: " + apple.y);
+		//System.out.println("Apple x: " + apple.x + " Apple y: " + apple.y);
 	}
 
 	@Override
 	// Game loop
 	public void actionPerformed(ActionEvent e) {
 
-		// Muutetaan vain pään paikkaa ja muu ruumis seuraa perässä
+		// Muutetaan vain pï¿½ï¿½n paikkaa ja muu ruumis seuraa perï¿½ssï¿½
 		snakeArray.get(0).x += squareXSpeed;
 		snakeArray.get(0).y += squareYSpeed;
 

@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Window extends JFrame  {
-	
+
+	private static final long serialVersionUID = 6381341702405403734L;
+
 	Gamepanel panel = new Gamepanel();
 	
 	public Window(String title) {
