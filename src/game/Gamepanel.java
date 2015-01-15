@@ -2,7 +2,9 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -26,7 +28,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	public Gamepanel() {
-
+		super(true); // set double buffer for jpanel
 		addKeyListener(this);
 		t = new Timer(100, this); // Swingtimer 100millis
 		t.start();
@@ -42,36 +44,46 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 	// Render
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.darkGray);
-		g.fillRect(0, 0, 500, 500);
+		super.paintComponent(g);
+		
+		Graphics2D graphics2D = (Graphics2D) g;
+		
+		//Set  anti-alias
+	    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+	            RenderingHints.VALUE_ANTIALIAS_ON); 
 
-		g.setColor(Color.GREEN);
+	   // Set anti-alias for text
+	    graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
+	    graphics2D.setColor(Color.darkGray);
+	    graphics2D.fillRect(0, 0, 500, 500);
 
-		// Loopataan mato ja piirret��n palaset
+		// Loopataan mato ja piirretään palaset
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
-			g.setColor(Color.GREEN);
-			g.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
+			graphics2D.setColor(Color.GREEN);
+			graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
 			
 			// Pieni 1px väli madon osien väliin
-			g.setColor(Color.darkGray);
-			g.drawRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
+			graphics2D.setColor(Color.darkGray);
+			graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
 			
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
 
-		// T�rm�ys itsens� kanssa
+		// Törmäys itsensä kanssa
 
 		for (int i = snakeArray.size() - 1; i > 1; i--) {
 			if (snakeArray.get(0).x == snakeArray.get(i).x
 					&& snakeArray.get(0).y == snakeArray.get(i).y) {
 				t.stop();
-				g.setColor(Color.RED);
-				g.drawString("Game Over!", 200, 250);
+				graphics2D.setColor(Color.RED);
+				graphics2D.drawString("Game Over!", 200, 250);
 			}
 		}
 
-			// T�rm�ys omenan kanssa
+			// Törmäys omenan kanssa
 			if (snakeArray.get(0).x <= apple.getX() + 15
 					&& snakeArray.get(0).x >= apple.getX() - 15
 					&& snakeArray.get(0).y <= apple.getY() + 15
@@ -83,30 +95,30 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			}
 
 
-		// Tehd��n uusi omena
+		// Tehdään uusi omena
 		if (apple.isApple() == false) {
 			apple.newPoint();
 			apple.setApple(true);
 		}
 
-		// Piirret��n omena
-		g.setColor(Color.RED);
-		//g.fillOval(apple.getX(), apple.getY(), Apple.SIZE, Apple.SIZE);
-		g.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(), null);
-		// Piirret��n Score
-		g.setColor(Color.GREEN);
-		g.drawString("Score: " + score, 400, 20);
+		// Piirretään omena
+		graphics2D.setColor(Color.RED);
+		graphics2D.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(), null);
+		
+		// Piirretään Score
+		graphics2D.setColor(Color.GREEN);
+		graphics2D.drawString("Score: " + score, 400, 20);
 
-		// Game over jos t�rm�t��n sein��n
+		// Game over jos törmätään seinään
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
-			g.setColor(Color.RED);
-			g.drawString("Game Over!", 200, 250);
+			graphics2D.setColor(Color.RED);
+			graphics2D.drawString("Game Over!", 200, 250);
 		}
 		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
 			t.stop();
-			g.setColor(Color.RED);
-			g.drawString("Game Over!", 200, 250);
+			graphics2D.setColor(Color.RED);
+			graphics2D.drawString("Game Over!", 200, 250);
 		}
 
 	}
@@ -115,7 +127,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	// Game loop
 	public void actionPerformed(ActionEvent e) {
 
-		// Muutetaan vain p��n paikkaa ja muu ruumis seuraa per�ss�
+		// Muutetaan vain pään paikkaa ja muu ruumis seuraa perässä
 		snakeArray.get(0).x += squareXSpeed;
 		snakeArray.get(0).y += squareYSpeed;
 
