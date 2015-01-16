@@ -10,8 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,10 +30,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private int score;
 	private Apple apple;
 	private Highscore hs;
+	private BufferedImage bg_image;
 	private ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
+	
 	public Gamepanel() {
 		super(true); // set double buffer for JPanel
 		addKeyListener(this);
@@ -45,6 +50,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		apple = new Apple();
 		hs = new Highscore();
 		
+		// Load background image
+	     try {                
+	          bg_image = ImageIO.read(this.getClass().getResource("/res/bg.png"));
+	       } catch (IOException ex) {
+	    }
+		
 	}
 
 	// Render the JPanel
@@ -57,13 +68,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// Set anti-alias for text
+		//Set anti-alias for text
 		//graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 		//		RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Clear the screen
-		graphics2D.setColor(Color.darkGray);
-		graphics2D.fillRect(0, 0, 500, 500);
+		g.drawImage(bg_image, 0, 0, null);
 
 		// Loop thru the snake and draw the pieces
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
@@ -99,6 +109,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 				
 				// Game over text
 				graphics2D.setColor(Color.RED);
+				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 				graphics2D.drawString("Game Over!", 200, 250);
 				hs.setScore(score);
 			}
@@ -152,6 +163,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			graphics2D.drawString("Game Over!", 180, 250);
 			hs.setScore(score);
 		}
+		
+		graphics2D.finalize();
 
 	}
 
