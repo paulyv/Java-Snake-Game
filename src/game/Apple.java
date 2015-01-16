@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 public class Apple {
 
+	// Variables
 	public final static int SIZE = 20;
 	public static BufferedImage APPLE_IMAGE;
 	private boolean isApple;
@@ -17,7 +18,9 @@ public class Apple {
 	private Random rand;
 	private int x;
 	private int y;
-		
+
+	// Constructor. Creates a new initial apple by reading apple image.png,
+	// creates new random point and sets apple to true
 	public Apple() {
 		try {
 			URL image_url = this.getClass().getResource("/res/redapple.png");
@@ -29,32 +32,36 @@ public class Apple {
 		point = new Point(rand.nextInt(450), rand.nextInt(450));
 		x = point.x;
 		y = point.y;
-		
+
 		isApple = true;
 	}
 
+	// Returns apples x coordinate
 	public int getX() {
 		return x;
 	}
 
-
+	// Returns apples y coordinate
 	public int getY() {
 		return y;
 	}
 
-
+	// Returns apples current status
 	public boolean isApple() {
 		return isApple;
 	}
 
+	// Set apple true or false wether it is eaten or not
 	public void setApple(boolean isApple) {
 		this.isApple = isApple;
 	}
 
+	// Returns apples current point
 	public Point getP() {
 		return point;
 	}
-	
+
+	// Create a new random point for the apple
 	public void newPoint() {
 		point = new Point(rand.nextInt(450), rand.nextInt(450));
 		x = point.x;

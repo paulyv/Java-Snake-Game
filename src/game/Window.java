@@ -10,6 +10,7 @@ public class Window extends JFrame  {
 
 	Gamepanel panel = new Gamepanel();
 	
+	// Create a new JFrame and add the panel on it.
 	public Window(String title) {
 		JFrame window = new JFrame(title);
 		window.setSize(new Dimension(500, 500));

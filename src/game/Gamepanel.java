@@ -16,6 +16,7 @@ import javax.swing.Timer;
 
 public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
+	// Variables
 	private static final long serialVersionUID = 5385848097769207171L;
 	private final int SQUARE_SIZE = 20;
 	private int squareXSpeed = 0;
@@ -27,22 +28,24 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private Highscore hs;
 	ArrayList<Point> snakeArray = new ArrayList<Point>();
 
+	// Constructor. Add timer and keylistener to panel. Initialize the snake and
+	// the apple.
 	public Gamepanel() {
-		// super(true); // set double buffer for jpanel
+		super(true); // set double buffer for JPanel
 		addKeyListener(this);
 		t = new Timer(100, this); // Swingtimer 100millis
 		t.start();
 
-		// alussa 2 palaa
+		// Initialize the worm
 		snakeArray.add(new Point(100, 100));
 		snakeArray.add(new Point(100, 80));
 
-
+		// Initialize apple and highscore object
 		apple = new Apple();
 		hs = new Highscore();
 	}
 
-	// Render
+	// Render the JPanel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -56,26 +59,25 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		// Clear the screen
 		graphics2D.setColor(Color.darkGray);
 		graphics2D.fillRect(0, 0, 500, 500);
 
-		// Loopataan mato ja piirretään palaset
+		// Loop thru the snake and draw the pieces
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
 			graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
 					SQUARE_SIZE, SQUARE_SIZE);
 
-			// Pieni 1px väli madon osien väliin
+			// Create spacing between snake pieces
 			graphics2D.setColor(Color.darkGray);
 			graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
 					SQUARE_SIZE, SQUARE_SIZE);
-
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
 
-		// Törmäys itsensä kanssa
-
+		// Detect collision with the snake itself
 		for (int i = snakeArray.size() - 1; i > 1; i--) {
 			if (snakeArray.get(0).x == snakeArray.get(i).x
 					&& snakeArray.get(0).y == snakeArray.get(i).y) {
@@ -86,7 +88,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 
-		// Törmäys omenan kanssa
+		// Detect collision with an apple and grow the snake by 1 piece. Add 10 to score.
 		if (snakeArray.get(0).x <= apple.getX() + 15
 				&& snakeArray.get(0).x >= apple.getX() - 15
 				&& snakeArray.get(0).y <= apple.getY() + 15
@@ -97,55 +99,54 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			score += 10;
 		}
 
-		// Tehdään uusi omena
+		// Create a new apple
 		if (apple.isApple() == false) {
 			apple.newPoint();
 			apple.setApple(true);
 		}
 
-		// Piirretään omena
+		// Draw the apple
 		graphics2D.setColor(Color.RED);
 		graphics2D.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(),
 				null);
 
-		// Piirretään Score
+		// Draw Highscore
 		graphics2D.setColor(Color.GREEN);
-		graphics2D.drawString("Score: " + score, 390, 20);
-
-		// Piirretään Highscore
+		graphics2D.drawString("High score: " + hs.getScore(), 390, 20);
+		
+		// Draw Score
 		graphics2D.setColor(Color.GREEN);
-		graphics2D.drawString("HighScore: " + hs.getScore(), 390, 35);
+		graphics2D.drawString("Score: " + score, 390, 35);
 
-		// Game over jos törmätään seinään
+		// Detect collision with the wall x-wise
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D.drawString("Game Over!", 200, 250);
 			hs.setScore(score);
 		}
+		// Detect collision with the wall y-wise
 		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D.drawString("Game Over!", 200, 250);
 			hs.setScore(score);
 		}
-		
-
 
 	}
-	
+
 	@Override
 	// Game loop
 	public void actionPerformed(ActionEvent e) {
 
-		// Muutetaan vain pään paikkaa ja muu ruumis seuraa perässä
+		// Move only the head (0-piece) and the rest will follow
 		snakeArray.get(0).x += squareXSpeed;
 		snakeArray.get(0).y += squareYSpeed;
 
 		repaint(); // call render (paintcomponent)
 	}
 
-	@Override
+	@Override // Move snake according to key presses
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (squareYSpeed == 0) {

@@ -9,12 +9,13 @@ import java.io.IOException;
 
 public class Highscore {
 
+	// Variables
 	private File f = new File("highscore.dat");
 	private int score;
 
+	// Constructor. Create a new file or read the old one
 	public Highscore() {
 
-		// Check if a file exists and Create a file
 		if (f.exists()) {
 			readScore();
 		} else {
@@ -36,7 +37,6 @@ public class Highscore {
 	}
 
 	// Read score from a file
-
 	private void readScore() {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(f));
