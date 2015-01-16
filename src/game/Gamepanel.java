@@ -32,6 +32,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private Highscore hs;
 	private BufferedImage bg_image;
 	private ArrayList<Point> snakeArray = new ArrayList<Point>();
+	private boolean gamePaused = false;
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
@@ -206,6 +207,16 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			if (squareYSpeed == 0) {
 				squareXSpeed = 0;
 				squareYSpeed = -speed;
+			}
+		}
+		// Pause game
+		if (e.getKeyCode() == KeyEvent.VK_P) {
+			if(!gamePaused){
+			t.stop();
+			gamePaused = true;
+			} else {
+			t.start();
+			gamePaused = false;
 			}
 		}
 
