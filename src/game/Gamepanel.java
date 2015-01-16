@@ -25,20 +25,18 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private int score;
 	private Apple apple;
 	private Highscore hs;
-	
 	ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	public Gamepanel() {
-		super(true); // set double buffer for jpanel
+		// super(true); // set double buffer for jpanel
 		addKeyListener(this);
 		t = new Timer(100, this); // Swingtimer 100millis
 		t.start();
 
-		// alussa 4 palaa
+		// alussa 2 palaa
 		snakeArray.add(new Point(100, 100));
 		snakeArray.add(new Point(100, 80));
-		snakeArray.add(new Point(100, 60));
-		snakeArray.add(new Point(100, 40));
+
 
 		apple = new Apple();
 		hs = new Highscore();
@@ -47,29 +45,31 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	// Render
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		Graphics2D graphics2D = (Graphics2D) g;
-		
-		//Set  anti-alias
-	    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	            RenderingHints.VALUE_ANTIALIAS_ON); 
 
-	   // Set anti-alias for text
-	    graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
-	    graphics2D.setColor(Color.darkGray);
-	    graphics2D.fillRect(0, 0, 500, 500);
+		Graphics2D graphics2D = (Graphics2D) g;
+
+		// Set anti-alias
+		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Set anti-alias for text
+		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+		graphics2D.setColor(Color.darkGray);
+		graphics2D.fillRect(0, 0, 500, 500);
 
 		// Loopataan mato ja piirretään palaset
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
-			graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
-			
+			graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
+					SQUARE_SIZE, SQUARE_SIZE);
+
 			// Pieni 1px väli madon osien väliin
 			graphics2D.setColor(Color.darkGray);
-			graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y, SQUARE_SIZE, SQUARE_SIZE);
-			
+			graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
+					SQUARE_SIZE, SQUARE_SIZE);
+
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
@@ -86,17 +86,16 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 
-			// Törmäys omenan kanssa
-			if (snakeArray.get(0).x <= apple.getX() + 15
-					&& snakeArray.get(0).x >= apple.getX() - 15
-					&& snakeArray.get(0).y <= apple.getY() + 15
-					&& snakeArray.get(0).y >= apple.getY() - 15) {
-				apple.setApple(false);
-				snakeArray.add(new Point((snakeArray.get(0).x), snakeArray
-						.get(0).y));
-				score += 10;
-			}
-
+		// Törmäys omenan kanssa
+		if (snakeArray.get(0).x <= apple.getX() + 15
+				&& snakeArray.get(0).x >= apple.getX() - 15
+				&& snakeArray.get(0).y <= apple.getY() + 15
+				&& snakeArray.get(0).y >= apple.getY() - 15) {
+			apple.setApple(false);
+			snakeArray
+					.add(new Point((snakeArray.get(0).x), snakeArray.get(0).y));
+			score += 10;
+		}
 
 		// Tehdään uusi omena
 		if (apple.isApple() == false) {
@@ -106,12 +105,13 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Piirretään omena
 		graphics2D.setColor(Color.RED);
-		graphics2D.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(), null);
-		
+		graphics2D.drawImage(Apple.APPLE_IMAGE, apple.getX(), apple.getY(),
+				null);
+
 		// Piirretään Score
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("Score: " + score, 390, 20);
-		
+
 		// Piirretään Highscore
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("HighScore: " + hs.getScore(), 390, 35);
@@ -129,9 +129,11 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			graphics2D.drawString("Game Over!", 200, 250);
 			hs.setScore(score);
 		}
+		
+
 
 	}
-
+	
 	@Override
 	// Game loop
 	public void actionPerformed(ActionEvent e) {

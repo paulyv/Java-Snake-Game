@@ -9,17 +9,15 @@ import java.io.IOException;
 
 public class Highscore {
 
-	private File f = new File("Highscore.dat");
+	private File f = new File("highscore.dat");
 	private int score;
 
 	public Highscore() {
 
 		// Check if a file exists and Create a file
 		if (f.exists()) {
-			System.out.println("File found!");
 			readScore();
 		} else {
-			System.out.println("No file found!");
 			setScore(0);
 		}
 	}
