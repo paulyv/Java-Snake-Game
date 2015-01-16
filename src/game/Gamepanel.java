@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -26,7 +27,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private int score;
 	private Apple apple;
 	private Highscore hs;
-	ArrayList<Point> snakeArray = new ArrayList<Point>();
+	private ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
@@ -43,6 +44,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Initialize apple and highscore object
 		apple = new Apple();
 		hs = new Highscore();
+		
 	}
 
 	// Render the JPanel
@@ -56,8 +58,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Set anti-alias for text
-		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		//graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+		//		RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Clear the screen
 		graphics2D.setColor(Color.darkGray);
@@ -127,6 +129,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Draw Highscore
 		graphics2D.setColor(Color.GREEN);
+		graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
 		graphics2D.drawString("High score: " + hs.getScore(), 390, 20);
 
 		// Draw Score
@@ -137,14 +140,16 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
-			graphics2D.drawString("Game Over!", 200, 250);
+			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D.drawString("Game Over!", 180, 250);
 			hs.setScore(score);
 		}
 		// Detect collision with the wall y-wise
 		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
-			graphics2D.drawString("Game Over!", 200, 250);
+			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D.drawString("Game Over!", 180, 250);
 			hs.setScore(score);
 		}
 
