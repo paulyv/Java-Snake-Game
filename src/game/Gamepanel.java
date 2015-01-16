@@ -73,18 +73,20 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		//		RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Clear the screen
-		g.drawImage(bg_image, 0, 0, null);
+		graphics2D.drawImage(bg_image, 0, 0, null);
+		
 
 		// Loop thru the snake and draw the pieces
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
-			graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
-					SQUARE_SIZE, SQUARE_SIZE);
+			graphics2D.fillRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
+					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
 
 			// Create spacing between snake pieces
-			graphics2D.setColor(Color.darkGray);
-			graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
-					SQUARE_SIZE, SQUARE_SIZE);
+			graphics2D.setColor(new Color(1,117,1));
+			graphics2D.drawRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
+					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
+			
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
