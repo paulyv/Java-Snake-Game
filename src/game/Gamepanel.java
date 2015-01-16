@@ -24,6 +24,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private Timer t;
 	private int score;
 	private Apple apple;
+	private Highscore hs;
 	
 	ArrayList<Point> snakeArray = new ArrayList<Point>();
 
@@ -40,6 +41,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		snakeArray.add(new Point(100, 40));
 
 		apple = new Apple();
+		hs = new Highscore();
 	}
 
 	// Render
@@ -80,6 +82,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 				t.stop();
 				graphics2D.setColor(Color.RED);
 				graphics2D.drawString("Game Over!", 200, 250);
+				hs.setScore(score);
 			}
 		}
 
@@ -107,18 +110,24 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		
 		// Piirretään Score
 		graphics2D.setColor(Color.GREEN);
-		graphics2D.drawString("Score: " + score, 400, 20);
+		graphics2D.drawString("Score: " + score, 390, 20);
+		
+		// Piirretään Highscore
+		graphics2D.setColor(Color.GREEN);
+		graphics2D.drawString("HighScore: " + hs.getScore(), 390, 35);
 
 		// Game over jos törmätään seinään
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D.drawString("Game Over!", 200, 250);
+			hs.setScore(score);
 		}
 		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D.drawString("Game Over!", 200, 250);
+			hs.setScore(score);
 		}
 
 	}
