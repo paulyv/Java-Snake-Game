@@ -77,18 +77,33 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
 
-		// Detect collision with the snake itself
+		// Detect collision with the snake itself. Turns the snake piece yellow
+		// which you've it.
 		for (int i = snakeArray.size() - 1; i > 1; i--) {
+			
 			if (snakeArray.get(0).x == snakeArray.get(i).x
 					&& snakeArray.get(0).y == snakeArray.get(i).y) {
 				t.stop();
+				
+				// Turn the piece yellow
+				graphics2D.setColor(Color.YELLOW);
+				graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
+						SQUARE_SIZE, SQUARE_SIZE);
+				
+				// Create spacing to the yellow piece.
+				graphics2D.setColor(Color.darkGray);
+				graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
+						SQUARE_SIZE, SQUARE_SIZE);
+				
+				// Game over text
 				graphics2D.setColor(Color.RED);
 				graphics2D.drawString("Game Over!", 200, 250);
 				hs.setScore(score);
 			}
 		}
 
-		// Detect collision with an apple and grow the snake by 1 piece. Add 10 to score.
+		// Detect collision with an apple and grow the snake by 1 piece. Add 10
+		// to score.
 		if (snakeArray.get(0).x <= apple.getX() + 15
 				&& snakeArray.get(0).x >= apple.getX() - 15
 				&& snakeArray.get(0).y <= apple.getY() + 15
@@ -113,7 +128,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Draw Highscore
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("High score: " + hs.getScore(), 390, 20);
-		
+
 		// Draw Score
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("Score: " + score, 390, 35);
@@ -143,10 +158,11 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		snakeArray.get(0).x += squareXSpeed;
 		snakeArray.get(0).y += squareYSpeed;
 
-		repaint(); // call render (paintcomponent)
+		repaint(); // call render (paint component)
 	}
 
-	@Override // Move snake according to key presses
+	@Override
+	// Move snake according to key presses
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (squareYSpeed == 0) {
