@@ -26,17 +26,21 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private int squareXSpeed = 0;
 	private int squareYSpeed = 20;
 	private int speed = 20;
-	private Timer t;
 	private int score;
+	private Timer t;
 	private Apple apple;
 	private Highscore hs;
 	private BufferedImage bg_image;
 	private ArrayList<Point> snakeArray = new ArrayList<Point>();
 	private boolean gamePaused = false;
+	private int haloSize = 0;
+	private boolean collision;
+	private int collision_x;
+	private int collision_y;
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
-	
+
 	public Gamepanel() {
 		super(true); // set double buffer for JPanel
 		addKeyListener(this);
@@ -50,13 +54,13 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Initialize apple and highscore object
 		apple = new Apple();
 		hs = new Highscore();
-		
+
 		// Load background image
-	     try {                
-	          bg_image = ImageIO.read(this.getClass().getResource("/res/bg.png"));
-	       } catch (IOException ex) {
-	    }
-		
+		try {
+			bg_image = ImageIO.read(this.getClass().getResource("/res/bg.png"));
+		} catch (IOException ex) {
+		}
+
 	}
 
 	// Render the JPanel
@@ -69,13 +73,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		//Set anti-alias for text
-		//graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-		//		RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		// Set anti-alias for text
+		// graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+		// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Clear the screen
 		graphics2D.drawImage(bg_image, 0, 0, null);
-		
 
 		// Loop thru the snake and draw the pieces
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
@@ -84,10 +87,10 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
 
 			// Create spacing between snake pieces
-			graphics2D.setColor(new Color(1,117,1));
+			graphics2D.setColor(new Color(1, 117, 1));
 			graphics2D.drawRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
 					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
-			
+
 			snakeArray.get(i).x = snakeArray.get(i - 1).x;
 			snakeArray.get(i).y = snakeArray.get(i - 1).y;
 		}
@@ -95,24 +98,25 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Detect collision with the snake itself. Turns the snake piece yellow
 		// which you've it.
 		for (int i = snakeArray.size() - 1; i > 1; i--) {
-			
+
 			if (snakeArray.get(0).x == snakeArray.get(i).x
 					&& snakeArray.get(0).y == snakeArray.get(i).y) {
 				t.stop();
-				
+
 				// Turn the piece yellow
 				graphics2D.setColor(Color.YELLOW);
 				graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
 						SQUARE_SIZE, SQUARE_SIZE);
-				
+
 				// Create spacing to the yellow piece.
 				graphics2D.setColor(Color.darkGray);
 				graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
 						SQUARE_SIZE, SQUARE_SIZE);
-				
+
 				// Game over text
 				graphics2D.setColor(Color.RED);
-				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD,
+						23));
 				graphics2D.drawString("Game Over!", 200, 250);
 				hs.setScore(score);
 			}
@@ -124,10 +128,25 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 				&& snakeArray.get(0).x >= apple.getX() - 15
 				&& snakeArray.get(0).y <= apple.getY() + 15
 				&& snakeArray.get(0).y >= apple.getY() - 15) {
+			collision = true;
+			collision_x = apple.getX();
+			collision_y = apple.getY();
 			apple.setApple(false);
 			snakeArray
 					.add(new Point((snakeArray.get(0).x), snakeArray.get(0).y));
 			score += 10;
+
+		}
+
+		// Draw a yellow halo animation around the place you got an apple
+		if (haloSize < 40 && collision == true) {
+			graphics2D.setColor(Color.YELLOW);
+			graphics2D.drawOval(collision_x - (haloSize / 2), collision_y
+					- (haloSize / 2), haloSize, haloSize);
+			haloSize += 8;
+		} else {
+			haloSize = 0;
+			collision = false;
 		}
 
 		// Create a new apple
@@ -154,7 +173,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
-			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D
+					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 180, 250);
 			hs.setScore(score);
 		}
@@ -162,11 +182,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
-			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D
+					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 180, 250);
 			hs.setScore(score);
 		}
-		
+
 		graphics2D.finalize();
 
 	}
@@ -211,12 +232,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		}
 		// Pause game
 		if (e.getKeyCode() == KeyEvent.VK_P) {
-			if(!gamePaused){
-			t.stop();
-			gamePaused = true;
+			if (!gamePaused) {
+				t.stop();
+				gamePaused = true;
 			} else {
-			t.start();
-			gamePaused = false;
+				t.start();
+				gamePaused = false;
 			}
 		}
 
