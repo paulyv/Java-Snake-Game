@@ -14,9 +14,10 @@ public class Snake {
 
 	// Constructor
 	public Snake() {
-		// Initialize the worm
+		// Initialize the snake
 		snakeArray.add(new Point(100, 100));
 		snakeArray.add(new Point(100, 80));
+		snakeArray.add(new Point(100, 60));
 	}
 	
 	// Accessor methods
@@ -50,10 +51,6 @@ public class Snake {
 
 	public void setSnakeArray(ArrayList<Point> snakeArray) {
 		this.snakeArray = snakeArray;
-	}
-
-	public int getSQUARE_SIZE() {
-		return SQUARE_SIZE;
 	}
 
 }
