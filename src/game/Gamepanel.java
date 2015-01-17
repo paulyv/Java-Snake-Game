@@ -77,10 +77,10 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 		// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		// Clear the screen
+		// Clear the screen (draw bgimage over everything)
 		graphics2D.drawImage(bg_image, 0, 0, null);
 
-		// Loop thru the snake and draw the pieces
+		// Loop through the snake and draw the pieces
 		for (int i = snakeArray.size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
 			graphics2D.fillRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
@@ -123,7 +123,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// Detect collision with an apple and grow the snake by 1 piece. Add 10
-		// to score.
+		// to score. Store collision coords for creating the halo animation
 		if (snakeArray.get(0).x <= apple.getX() + 15
 				&& snakeArray.get(0).x >= apple.getX() - 15
 				&& snakeArray.get(0).y <= apple.getY() + 15
@@ -138,7 +138,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		}
 
-		// Draw a yellow halo animation around the place you got an apple
+		// Draw a yellow halo animation around the place you got the apple
 		if (haloSize < 40 && collision == true) {
 			graphics2D.setColor(Color.YELLOW);
 			graphics2D.drawOval(collision_x - (haloSize / 2), collision_y
