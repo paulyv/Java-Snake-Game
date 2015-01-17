@@ -3,7 +3,7 @@ package game;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-public class Main extends JFrame {
+public class Snake_Main extends JFrame {
 
 	private static final long serialVersionUID = -1178974578870720723L;
 

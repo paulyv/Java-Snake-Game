@@ -108,15 +108,15 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 				// Turn the piece yellow
 				graphics2D.setColor(Color.YELLOW);
-				graphics2D.fillRect(snake.getSnakeArray().get(i).x, snake
+				graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake
 						.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-						Snake.SQUARE_SIZE);
+						Snake.SQUARE_SIZE, 10, 10);
 
 				// Create spacing to the yellow piece.
-				graphics2D.setColor(Color.darkGray);
-				graphics2D.drawRect(snake.getSnakeArray().get(i).x, snake
+				graphics2D.setColor(new Color(1, 117, 1));
+				graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake
 						.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-						Snake.SQUARE_SIZE);
+						Snake.SQUARE_SIZE, 10, 10);
 
 				// Game over text
 				graphics2D.setColor(Color.RED);
@@ -141,6 +141,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 					new Point((snake.getSnakeArray().get(0).x), snake
 							.getSnakeArray().get(0).y));
 			score += 10;
+			musicMan.playPickup();
 		}
 
 		// Draw a yellow halo animation around the place you got an apple

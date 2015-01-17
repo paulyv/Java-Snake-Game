@@ -1,23 +1,26 @@
 package game;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.newdawn.easyogg.OggClip;
 
 public class MusicManager {
 
 	private OggClip music;
-	// private OggClip pickup;
+	private File pickup;
 
 	public MusicManager() {
 		try {
-		//	pickup = new OggClip(this.getClass().getResourceAsStream(
-		//			"/res/pickup.ogg"));
-			
 			music = new OggClip(this.getClass().getResourceAsStream(
 					"/res/saga_musix_candy.ogg"));
 			
-
+			pickup = new File("res/pickup.wav");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +44,17 @@ public class MusicManager {
 	}
 
 	public void playPickup() {
-		// pickup.loop();
+		Clip clip;
+		try {
+			clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(pickup));
+			clip.start();
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 
 	}
 
