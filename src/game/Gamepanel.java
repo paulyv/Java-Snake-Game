@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,21 +21,20 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 	// Variables
 	private static final long serialVersionUID = 5385848097769207171L;
-	private final int SQUARE_SIZE = 20;
-	private int squareXSpeed = 0;
-	private int squareYSpeed = 20;
-	private int speed = 20;
+
 	private int score;
+	private int collision_x;
+	private int collision_y;
+	private int haloSize = 0;
+	private boolean gamePaused = false;
+	private boolean collision;
 	private Timer t;
 	private Apple apple;
 	private Highscore hs;
 	private BufferedImage bg_image;
-	private ArrayList<Point> snakeArray = new ArrayList<Point>();
-	private boolean gamePaused = false;
-	private int haloSize = 0;
-	private boolean collision;
-	private int collision_x;
-	private int collision_y;
+	private Snake snake;
+
+	
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
@@ -47,11 +45,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		t = new Timer(100, this); // Swingtimer 100millis
 		t.start();
 
-		// Initialize the worm
-		snakeArray.add(new Point(100, 100));
-		snakeArray.add(new Point(100, 80));
-
 		// Initialize apple and highscore object
+		snake = new Snake();
 		apple = new Apple();
 		hs = new Highscore();
 
@@ -81,37 +76,37 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawImage(bg_image, 0, 0, null);
 
 		// Loop through the snake and draw the pieces
-		for (int i = snakeArray.size() - 1; i > 0; i--) {
+		for (int i = snake.getSnakeArray().size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
-			graphics2D.fillRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
-					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
+			graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y,
+					Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 			// Create spacing between snake pieces
 			graphics2D.setColor(new Color(1, 117, 1));
-			graphics2D.drawRoundRect(snakeArray.get(i).x, snakeArray.get(i).y,
-					SQUARE_SIZE, SQUARE_SIZE, 10, 10);
+			graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y,
+					Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
-			snakeArray.get(i).x = snakeArray.get(i - 1).x;
-			snakeArray.get(i).y = snakeArray.get(i - 1).y;
+			snake.getSnakeArray().get(i).x = snake.getSnakeArray().get(i - 1).x;
+			snake.getSnakeArray().get(i).y = snake.getSnakeArray().get(i - 1).y;
 		}
 
 		// Detect collision with the snake itself. Turns the snake piece yellow
 		// which you've it.
-		for (int i = snakeArray.size() - 1; i > 1; i--) {
+		for (int i = snake.getSnakeArray().size() - 1; i > 1; i--) {
 
-			if (snakeArray.get(0).x == snakeArray.get(i).x
-					&& snakeArray.get(0).y == snakeArray.get(i).y) {
+			if (snake.getSnakeArray().get(0).x == snake.getSnakeArray().get(i).x
+					&& snake.getSnakeArray().get(0).y == snake.getSnakeArray().get(i).y) {
 				t.stop();
 
 				// Turn the piece yellow
 				graphics2D.setColor(Color.YELLOW);
-				graphics2D.fillRect(snakeArray.get(i).x, snakeArray.get(i).y,
-						SQUARE_SIZE, SQUARE_SIZE);
+				graphics2D.fillRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y,
+						Snake.SQUARE_SIZE, Snake.SQUARE_SIZE);
 
 				// Create spacing to the yellow piece.
 				graphics2D.setColor(Color.darkGray);
-				graphics2D.drawRect(snakeArray.get(i).x, snakeArray.get(i).y,
-						SQUARE_SIZE, SQUARE_SIZE);
+				graphics2D.drawRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y,
+						Snake.SQUARE_SIZE, Snake.SQUARE_SIZE);
 
 				// Game over text
 				graphics2D.setColor(Color.RED);
@@ -123,22 +118,22 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// Detect collision with an apple and grow the snake by 1 piece. Add 10
-		// to score. Store collision coords for creating the halo animation
-		if (snakeArray.get(0).x <= apple.getX() + 15
-				&& snakeArray.get(0).x >= apple.getX() - 15
-				&& snakeArray.get(0).y <= apple.getY() + 15
-				&& snakeArray.get(0).y >= apple.getY() - 15) {
+		// to score. Store collision coords for 
+		if (snake.getSnakeArray().get(0).x <= apple.getX() + 15
+				&& snake.getSnakeArray().get(0).x >= apple.getX() - 15
+				&& snake.getSnakeArray().get(0).y <= apple.getY() + 15
+				&& snake.getSnakeArray().get(0).y >= apple.getY() - 15) {
 			collision = true;
 			collision_x = apple.getX();
 			collision_y = apple.getY();
 			apple.setApple(false);
-			snakeArray
-					.add(new Point((snakeArray.get(0).x), snakeArray.get(0).y));
+			snake.getSnakeArray()
+					.add(new Point((snake.getSnakeArray().get(0).x), snake.getSnakeArray().get(0).y));
 			score += 10;
 
 		}
 
-		// Draw a yellow halo animation around the place you got the apple
+		// Draw a yellow halo animation around the place you got an apple
 		if (haloSize < 40 && collision == true) {
 			graphics2D.setColor(Color.YELLOW);
 			graphics2D.drawOval(collision_x - (haloSize / 2), collision_y
@@ -170,7 +165,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawString("Score: " + score, 390, 35);
 
 		// Detect collision with the wall x-wise
-		if (snakeArray.get(0).x > this.getWidth() || snakeArray.get(0).x < 0) {
+		if (snake.getSnakeArray().get(0).x > this.getWidth() || snake.getSnakeArray().get(0).x < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D
@@ -179,7 +174,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			hs.setScore(score);
 		}
 		// Detect collision with the wall y-wise
-		if (snakeArray.get(0).y > this.getHeight() || snakeArray.get(0).y < 0) {
+		if (snake.getSnakeArray().get(0).y > this.getHeight() || snake.getSnakeArray().get(0).y < 0) {
 			t.stop();
 			graphics2D.setColor(Color.RED);
 			graphics2D
@@ -197,8 +192,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 
 		// Move only the head (0-piece) and the rest will follow
-		snakeArray.get(0).x += squareXSpeed;
-		snakeArray.get(0).y += squareYSpeed;
+		snake.getSnakeArray().get(0).x += snake.getSquareXSpeed();
+		snake.getSnakeArray().get(0).y += snake.getSquareYSpeed();
 
 		repaint(); // call render (paint component)
 	}
@@ -207,27 +202,28 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	// Move snake according to key presses
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (squareYSpeed == 0) {
-				squareXSpeed = 0;
-				squareYSpeed = speed;
+			if (snake.getSquareYSpeed() == 0) {
+				snake.setSquareXSpeed(0);
+				snake.setSquareYSpeed(snake.getSpeed());
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (squareXSpeed == 0) {
-				squareXSpeed = speed;
-				squareYSpeed = 0;
+			if (snake.getSquareXSpeed() == 0) {
+				snake.setSquareYSpeed(0);
+				snake.setSquareXSpeed(snake.getSpeed());
+				
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (squareXSpeed == 0) {
-				squareXSpeed = -speed;
-				squareYSpeed = 0;
+			if (snake.getSquareXSpeed() == 0) {
+				snake.setSquareYSpeed(0);
+				snake.setSquareXSpeed(-(snake.getSpeed()));
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (squareYSpeed == 0) {
-				squareXSpeed = 0;
-				squareYSpeed = -speed;
+			if (snake.getSquareYSpeed() == 0) {
+				snake.setSquareXSpeed(0);
+				snake.setSquareYSpeed(-(snake.getSpeed()));
 			}
 		}
 		// Pause game
