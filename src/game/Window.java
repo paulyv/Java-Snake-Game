@@ -13,7 +13,7 @@ public class Window extends JFrame  {
 	// Create a new JFrame and add the panel on it.
 	public Window(String title) {
 		JFrame window = new JFrame(title);
-		window.setSize(new Dimension(500, 500));
+		window.setSize(new Dimension(600, 640));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setLocationRelativeTo(null);
 		window.setResizable(true);

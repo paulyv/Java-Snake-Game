@@ -7,6 +7,7 @@ import net.java.games.input.ControllerEnvironment;
 public class USBController implements Runnable {
 
 	private static Controller ps3Controller;
+	private boolean isController = false;
 
 	// Constructroe
 	public USBController() {
@@ -21,6 +22,7 @@ public class USBController implements Runnable {
 			if (cs[i].getType() == Controller.Type.STICK) {
 				ps3Controller = cs[i];
 				System.out.println("This is ps3 stick controller");
+				isController = true;
 			}
 
 		}
@@ -29,7 +31,7 @@ public class USBController implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (isController) {
 			// Poll the controller for changes in buttons
 			ps3Controller.poll();
 			// Loop through the components and check for changes in desired buttons

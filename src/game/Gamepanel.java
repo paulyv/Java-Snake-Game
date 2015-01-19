@@ -35,6 +35,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private BufferedImage bg_image;
 	private Snake snake;
 	private MusicManager musicMan;
+	private final int gameAreaXoffset = 50;
+	private final int gameAreaYoffset = 50;
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
@@ -57,6 +59,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		try {
 			//this.getClass().getClassLoader().getResourceAsStream
 			bg_image = ImageIO.read(new File("res/bg.png"));
+
 		} catch (IOException ex) {
 		}
 		
@@ -79,8 +82,11 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 		// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		// Clear the screen (draw bg_image over everything)
-		graphics2D.drawImage(bg_image, 0, 0, null);
+		
+		graphics2D.setColor(new Color(82, 50, 0));
+		graphics2D.fillRect(0, 0, 700, 700);
+		// Draw the actual gaming area over the grass
+		graphics2D.drawImage(bg_image, gameAreaXoffset, gameAreaYoffset, null);
 
 		// Loop through the snake and draw the pieces
 		for (int i = snake.getSnakeArray().size() - 1; i >= 0; i--) {
@@ -121,7 +127,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 				graphics2D.setColor(Color.RED);
 				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD,
 						23));
-				graphics2D.drawString("Game Over!", 200, 250);
+				graphics2D.drawString("Game Over!", 200, 300);
 				highscore.setScore(score);
 				t.stop();
 			}
@@ -168,32 +174,32 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Draw Highscore
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 13));
-		graphics2D.drawString("High score: " + highscore.getScore(), 390, 20);
+		graphics2D.drawString("High score: " + highscore.getScore(), 400, 70);
 
 		// Draw Score
 		graphics2D.setColor(Color.GREEN);
-		graphics2D.drawString("Score: " + score, 390, 35);
+		graphics2D.drawString("Score: " + score, 400, 85);
 
 		// Detect collision with the wall x-wise
-		if (snake.getSnakeArray().get(0).x  >= this.getWidth() - Snake.SQUARE_SIZE
-				|| snake.getSnakeArray().get(0).x < 0) {
+		if (snake.getSnakeArray().get(0).x >= 500 + gameAreaXoffset
+				|| snake.getSnakeArray().get(0).x < 0 + gameAreaXoffset - Snake.SQUARE_SIZE) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
 			graphics2D
 					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
-			graphics2D.drawString("Game Over!", 180, 250);
+			graphics2D.drawString("Game Over!", 200, 300);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
 			t.stop();
 		}
 		// Detect collision with the wall y-wise
-		if (snake.getSnakeArray().get(0).y >= this.getHeight() - Snake.SQUARE_SIZE
-				|| snake.getSnakeArray().get(0).y < 0) {
+		if (snake.getSnakeArray().get(0).y >= 500 + gameAreaYoffset + Snake.SQUARE_SIZE
+				|| snake.getSnakeArray().get(0).y < 0 + gameAreaYoffset - Snake.SQUARE_SIZE) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
 			graphics2D
 					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
-			graphics2D.drawString("Game Over!", 180, 250);
+			graphics2D.drawString("Game Over!", 200, 300);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
 			t.stop();

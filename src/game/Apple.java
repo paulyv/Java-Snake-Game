@@ -28,7 +28,7 @@ public class Apple {
 			e.printStackTrace();
 		}
 		rand = new Random();
-		point = new Point(rand.nextInt(450), rand.nextInt(450));
+		point = new Point(rand.nextInt(480) + 50, rand.nextInt(480) + 50);
 		x = point.x;
 		y = point.y;
 
@@ -62,7 +62,7 @@ public class Apple {
 
 	// Create a new random point for the apple
 	public void newPoint() {
-		point = new Point(rand.nextInt(450), rand.nextInt(450));
+		point = new Point(rand.nextInt(480) + 50, rand.nextInt(480) + 50);
 		x = point.x;
 		y = point.x;
 	}
