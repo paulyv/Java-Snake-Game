@@ -206,8 +206,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		
 		// Move only the head (0-piece) and the rest will follow
-		snake.getSnakeArray().get(0).x += snake.SPEED * snake.getSnakeXdirection();
-		snake.getSnakeArray().get(0).y += snake.SPEED * snake.getSnakeYdirection();
+		snake.getSnakeArray().get(0).x += Snake.SPEED * snake.getSnakeXdirection();
+		snake.getSnakeArray().get(0).y += Snake.SPEED * snake.getSnakeYdirection();
 		repaint(); // call render (paint component)
 		
 	}
