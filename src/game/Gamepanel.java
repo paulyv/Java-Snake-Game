@@ -44,11 +44,12 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		t = new Timer(80, this); // Swingtimer 100millis
 		
 
-		// Initialize apple and highscore object
+		// Initialize objects and the controller thread
 		musicMan = new MusicManager();
 		snake = new Snake();
 		apple = new Apple();
 		highscore = new Highscore();
+		(new Thread(new USBController())).start();
 		
 
 		// Load background image

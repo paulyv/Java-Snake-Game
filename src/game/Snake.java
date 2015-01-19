@@ -8,8 +8,8 @@ public class Snake {
 	// Variables
 	public static final int SQUARE_SIZE = 20;
 	public static int SPEED = 20;
-	private int snakeXdirection;
-	private int snakeYdirection;
+	private static int snakeXdirection;
+	private static int snakeYdirection;
 	private ArrayList<Point> snakeArray = new ArrayList<Point>();
 
 	// Constructor
@@ -34,20 +34,20 @@ public class Snake {
 		this.snakeArray = snakeArray;
 	}
 
-	public int getSnakeXdirection() {
+	public static int getSnakeXdirection() {
 		return snakeXdirection;
 	}
 
-	public void setSnakeXdirection(int snakeXdirection) {
-		this.snakeXdirection = snakeXdirection;
+	public static void setSnakeXdirection(int Xdirection) {
+		snakeXdirection = Xdirection;
 	}
 
-	public int getSnakeYdirection() {
+	public static int getSnakeYdirection() {
 		return snakeYdirection;
 	}
 
-	public void setSnakeYdirection(int snakeYdirection) {
-		this.snakeYdirection = snakeYdirection;
+	public static void setSnakeYdirection(int Ydirection) {
+		snakeYdirection = Ydirection;
 	}
 
 }
