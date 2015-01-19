@@ -18,6 +18,7 @@ public class Snake {
 		snakeArray.add(new Point(100, 100));
 		snakeArray.add(new Point(100, 80));
 		snakeArray.add(new Point(100, 60));
+		//initial snake direction
 		setSnakeXdirection(0);
 		setSnakeYdirection(1);
 	}
