@@ -2,8 +2,8 @@ package game;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -23,8 +23,7 @@ public class Apple {
 	// creates new random point and sets apple to true
 	public Apple() {
 		try {
-			URL image_url = this.getClass().getResource("/res/redapple.png");
-			APPLE_IMAGE = ImageIO.read(image_url);
+			APPLE_IMAGE = ImageIO.read(new File("res/redapple.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Highscore {
 
 	// Variables
-	private File f = new File("highscore.dat");
+	private File f = new File("res/highscore.dat");
 	private int score;
 
 	// Constructor. Create a new file or read the old one

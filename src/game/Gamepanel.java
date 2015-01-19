@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -54,7 +55,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Load background image
 		try {
-			bg_image = ImageIO.read(this.getClass().getResource("/res/bg.png"));
+			//this.getClass().getClassLoader().getResourceAsStream
+			bg_image = ImageIO.read(new File("res/bg.png"));
 		} catch (IOException ex) {
 		}
 		
@@ -173,7 +175,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawString("Score: " + score, 390, 35);
 
 		// Detect collision with the wall x-wise
-		if (snake.getSnakeArray().get(0).x  >= this.getWidth() - snake.SQUARE_SIZE
+		if (snake.getSnakeArray().get(0).x  >= this.getWidth() - Snake.SQUARE_SIZE
 				|| snake.getSnakeArray().get(0).x < 0) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
@@ -185,7 +187,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			t.stop();
 		}
 		// Detect collision with the wall y-wise
-		if (snake.getSnakeArray().get(0).y >= this.getHeight() - snake.SQUARE_SIZE
+		if (snake.getSnakeArray().get(0).y >= this.getHeight() - Snake.SQUARE_SIZE
 				|| snake.getSnakeArray().get(0).y < 0) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
@@ -207,8 +209,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		
 		// Move only the head (0-piece) and the rest will follow
-		snake.getSnakeArray().get(0).x += Snake.SPEED * snake.getSnakeXdirection();
-		snake.getSnakeArray().get(0).y += Snake.SPEED * snake.getSnakeYdirection();
+		snake.getSnakeArray().get(0).x += Snake.SPEED * Snake.getSnakeXdirection();
+		snake.getSnakeArray().get(0).y += Snake.SPEED * Snake.getSnakeYdirection();
 		repaint(); // call render (paint component)
 		
 	}
@@ -217,28 +219,28 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	// Move snake according to key presses
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (snake.getSnakeYdirection() == 0) {
-				snake.setSnakeXdirection(0);
-				snake.setSnakeYdirection(1);
+			if (Snake.getSnakeYdirection() == 0) {
+				Snake.setSnakeXdirection(0);
+				Snake.setSnakeYdirection(1);
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (snake.getSnakeXdirection() == 0) {
-				snake.setSnakeXdirection(1);
-				snake.setSnakeYdirection(0);
+			if (Snake.getSnakeXdirection() == 0) {
+				Snake.setSnakeXdirection(1);
+				Snake.setSnakeYdirection(0);
 
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (snake.getSnakeXdirection() == 0) {
-				snake.setSnakeXdirection(-1);
-				snake.setSnakeYdirection(0);
+			if (Snake.getSnakeXdirection() == 0) {
+				Snake.setSnakeXdirection(-1);
+				Snake.setSnakeYdirection(0);
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (snake.getSnakeYdirection() == 0) {
-				snake.setSnakeXdirection(0);
-				snake.setSnakeYdirection(-1);
+			if (Snake.getSnakeYdirection() == 0) {
+				Snake.setSnakeXdirection(0);
+				Snake.setSnakeYdirection(-1);
 			}
 		}
 		// Pause game

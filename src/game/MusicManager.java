@@ -1,7 +1,9 @@
 package game;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,8 +19,8 @@ public class MusicManager {
 
 	public MusicManager() {
 		try {
-			music = new OggClip(this.getClass().getResourceAsStream(
-					"/res/saga_musix_candy.ogg"));
+			InputStream in = new FileInputStream("res/saga_musix_candy.ogg");
+			music = new OggClip(in);
 			
 			pickup = new File("res/pickup.wav");
 		} catch (IOException e) {
