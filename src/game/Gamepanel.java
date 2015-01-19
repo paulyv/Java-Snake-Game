@@ -82,15 +82,11 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		// Loop through the snake and draw the pieces
 		for (int i = snake.getSnakeArray().size() - 1; i > 0; i--) {
 			graphics2D.setColor(Color.GREEN);
-			graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake
-					.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-					Snake.SQUARE_SIZE, 10, 10);
+			graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 			// Create spacing between snake pieces
 			graphics2D.setColor(new Color(1, 117, 1));
-			graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake
-					.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-					Snake.SQUARE_SIZE, 10, 10);
+			graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 			snake.getSnakeArray().get(i).x = snake.getSnakeArray().get(i - 1).x;
 			snake.getSnakeArray().get(i).y = snake.getSnakeArray().get(i - 1).y;
@@ -98,12 +94,10 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		// Detect collision with the snake itself. Turns the snake piece yellow
 		// which you've it.
-		for (int i = snake.getSnakeArray().size() - 1; i > 2; i--) {
+		for (int i = snake.getSnakeArray().size() - 1; i > 1; i--) {
 
-			if (snake.getSnakeArray().get(0).x == snake.getSnakeArray().get(i).x
-					&& snake.getSnakeArray().get(0).y == snake.getSnakeArray()
-							.get(i).y) {
-				t.stop();
+			if (snake.getSnakeArray().get(0).x == snake.getSnakeArray().get(i).x && snake.getSnakeArray().get(0).y == snake.getSnakeArray().get(i).y) {
+				
 				musicMan.stopPlaying();
 
 				// Turn the piece yellow
@@ -124,6 +118,7 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 						23));
 				graphics2D.drawString("Game Over!", 200, 250);
 				highscore.setScore(score);
+				t.stop();
 			}
 		}
 
@@ -137,9 +132,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			collision_x = apple.getX();
 			collision_y = apple.getY();
 			apple.setApple(false);
-			snake.getSnakeArray().add(
-					new Point((snake.getSnakeArray().get(0).x), snake
-							.getSnakeArray().get(0).y));
+			// add a new point to place of the last piece
+			snake.getSnakeArray().add(new Point((snake.getSnakeArray().get(snake.getSnakeArray().size() - 1).x), snake.getSnakeArray().get(snake.getSnakeArray().size() - 1).y));
 			score += 10;
 			musicMan.playPickup();
 		}
@@ -176,29 +170,31 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawString("Score: " + score, 390, 35);
 
 		// Detect collision with the wall x-wise
-		if (snake.getSnakeArray().get(0).x > this.getWidth()
-				|| snake.getSnakeArray().get(0).x < 0) {
-			t.stop();
+		if (snake.getSnakeArray().get(0).x >= this.getWidth()
+				|| snake.getSnakeArray().get(0).x <= 0) {
+			
 			graphics2D.setColor(Color.RED);
 			graphics2D
 					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 180, 250);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
+			t.stop();
 		}
 		// Detect collision with the wall y-wise
 		if (snake.getSnakeArray().get(0).y > this.getHeight()
 				|| snake.getSnakeArray().get(0).y < 0) {
-			t.stop();
+		
 			graphics2D.setColor(Color.RED);
 			graphics2D
 					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 180, 250);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
+			t.stop();
 		}
 
-		graphics2D.finalize();
+		
 
 	}
 
@@ -206,39 +202,40 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	// Game loop
 	public void actionPerformed(ActionEvent e) {
 
+		
 		// Move only the head (0-piece) and the rest will follow
-		snake.getSnakeArray().get(0).x += snake.getSquareXSpeed();
-		snake.getSnakeArray().get(0).y += snake.getSquareYSpeed();
-
+		snake.getSnakeArray().get(0).x += snake.SPEED * snake.getSnakeXdirection();
+		snake.getSnakeArray().get(0).y += snake.SPEED * snake.getSnakeYdirection();
 		repaint(); // call render (paint component)
+		
 	}
 
 	@Override
 	// Move snake according to key presses
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (snake.getSquareYSpeed() == 0) {
-				snake.setSquareXSpeed(0);
-				snake.setSquareYSpeed(snake.getSpeed());
+			if (snake.getSnakeYdirection() == 0) {
+				snake.setSnakeXdirection(0);
+				snake.setSnakeYdirection(1);
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (snake.getSquareXSpeed() == 0) {
-				snake.setSquareYSpeed(0);
-				snake.setSquareXSpeed(snake.getSpeed());
+			if (snake.getSnakeXdirection() == 0) {
+				snake.setSnakeXdirection(1);
+				snake.setSnakeYdirection(0);
 
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (snake.getSquareXSpeed() == 0) {
-				snake.setSquareYSpeed(0);
-				snake.setSquareXSpeed(-(snake.getSpeed()));
+			if (snake.getSnakeXdirection() == 0) {
+				snake.setSnakeXdirection(-1);
+				snake.setSnakeYdirection(0);
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (snake.getSquareYSpeed() == 0) {
-				snake.setSquareXSpeed(0);
-				snake.setSquareYSpeed(-(snake.getSpeed()));
+			if (snake.getSnakeYdirection() == 0) {
+				snake.setSnakeXdirection(0);
+				snake.setSnakeYdirection(-1);
 			}
 		}
 		// Pause game
