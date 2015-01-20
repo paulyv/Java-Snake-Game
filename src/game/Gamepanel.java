@@ -35,8 +35,9 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private BufferedImage bg_image;
 	private Snake snake;
 	private MusicManager musicMan;
-	private final int gameAreaXoffset = 50;
-	private final int gameAreaYoffset = 50;
+	public static final int gameAreaXoffset = 50;
+	public static final int gameAreaYoffset = 50;
+	private Point[][] gameArea = new Point[25][25];
 
 	// Constructor. Add timer and keylistener to panel. Initialize the snake and
 	// the apple.
@@ -66,6 +67,13 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		t.start();
 		musicMan.loopPlaying();
 		
+		for (int i = 0; i < gameArea.length; i++) {
+			for (int j = 0; j < gameArea[i].length; j++) {
+				gameArea[i][j] = new Point(i * Snake.SQUARE_SIZE, j * Snake.SQUARE_SIZE);
+				
+			}
+		}
+		
 	}
 
 	// Render the JPanel
@@ -85,12 +93,21 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		
 		graphics2D.setColor(new Color(82, 50, 0));
 		graphics2D.fillRect(0, 0, 700, 700);
+		
 		// Draw the actual gaming area over the grass
 		graphics2D.drawImage(bg_image, gameAreaXoffset, gameAreaYoffset, null);
 		
 		graphics2D.setFont(new Font("Tahoma", Font.BOLD, 30));
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("SNAKE GAME",200, 40);
+		
+		// Visualize game area grid for testing
+		for (int i = 0; i < gameArea.length; i++) {
+			for (int j = 0; j < gameArea[i].length; j++) {
+				graphics2D.setColor(Color.RED);
+				graphics2D.drawRect(gameArea[i][j].x + gameAreaXoffset, gameArea[i][j].y + gameAreaYoffset, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE);
+			}
+		}
 
 		// Loop through the snake and draw the pieces
 		for (int i = snake.getSnakeArray().size() - 1; i >= 0; i--) {
@@ -185,8 +202,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawString("Score: " + score, 400, 85);
 
 		// Detect collision with the wall x-wise
-		if (snake.getSnakeArray().get(0).x >= 500 + gameAreaXoffset
-				|| snake.getSnakeArray().get(0).x < 0 + gameAreaXoffset - Snake.SQUARE_SIZE) {
+		if (snake.getSnakeArray().get(0).x > 500 + gameAreaXoffset - Snake.SQUARE_SIZE
+				|| snake.getSnakeArray().get(0).x < 0 + gameAreaXoffset) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
 			graphics2D
@@ -197,8 +214,8 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 			t.stop();
 		}
 		// Detect collision with the wall y-wise
-		if (snake.getSnakeArray().get(0).y >= 500 + gameAreaYoffset + Snake.SQUARE_SIZE
-				|| snake.getSnakeArray().get(0).y < 0 + gameAreaYoffset - Snake.SQUARE_SIZE) {
+		if (snake.getSnakeArray().get(0).y > 500 + gameAreaYoffset - Snake.SQUARE_SIZE
+				|| snake.getSnakeArray().get(0).y < 0 + gameAreaYoffset) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
 			graphics2D

@@ -15,9 +15,10 @@ public class Snake {
 	// Constructor
 	public Snake() {
 		// Initialize the snake
-		snakeArray.add(new Point(100, 100));
-		snakeArray.add(new Point(100, 80));
-		snakeArray.add(new Point(100, 60));
+		snakeArray.add(new Point(0 + Gamepanel.gameAreaXoffset, 0 + Gamepanel.gameAreaYoffset));
+		snakeArray.add(new Point(this.SQUARE_SIZE + Gamepanel.gameAreaXoffset, this.SQUARE_SIZE + Gamepanel.gameAreaYoffset));
+		snakeArray.add(new Point(this.SQUARE_SIZE * 2 + Gamepanel.gameAreaXoffset, this.SQUARE_SIZE * 2 + Gamepanel.gameAreaYoffset));
+
 		//initial snake direction
 		setSnakeXdirection(0);
 		setSnakeYdirection(1);
