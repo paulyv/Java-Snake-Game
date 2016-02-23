@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Snake {
 
-	// Variables
 	public static final int SQUARE_SIZE = 20;
 	public static int SPEED = 20;
 	private static int snakeXdirection;
 	private static int snakeYdirection;
 	private ArrayList<Point> snakeArray = new ArrayList<Point>();
 
-	// Constructor
+
 	public Snake() {
+		
 		// Initialize the snake
 		snakeArray.add(new Point(0 + Gamepanel.gameAreaXoffset, 0 + Gamepanel.gameAreaYoffset));
 		snakeArray.add(new Point(SQUARE_SIZE + Gamepanel.gameAreaXoffset, SQUARE_SIZE + Gamepanel.gameAreaYoffset));
@@ -24,9 +24,6 @@ public class Snake {
 		setSnakeYdirection(1);
 	}
 	
-	// Accessor methods
-
-
 	public ArrayList<Point> getSnakeArray() {
 		return snakeArray;
 	}

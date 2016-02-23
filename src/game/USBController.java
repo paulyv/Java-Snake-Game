@@ -9,14 +9,15 @@ public class USBController implements Runnable {
 	private static Controller ps3Controller;
 	private boolean isController = false;
 
-	// Constructroe
 	public USBController() {
 		
 		// Get the controller environment
 		ControllerEnvironment ce = ControllerEnvironment.getDefaultEnvironment();
+		
 		// Get all controllers from the environment
 		Controller[] cs = ce.getControllers();
-		// Loop through the controllers array to find type of stick controller
+		
+		// Find and assign ps3 controller
 		for (int i = 0; i < cs.length; i++) {
 			// Assign the stick controller to ps3 variable
 			if (cs[i].getType() == Controller.Type.STICK) {

@@ -9,20 +9,17 @@ import javax.imageio.ImageIO;
 
 public class Apple extends Item {
 
-	// Constructor. Creates a new initial apple by reading apple image.png,
-	// creates new random point and sets apple to true
+
 	public Apple() {
 		try {
 			Image = ImageIO.read(new File("res/redapple.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		// Create a random number to the gamearegrid + offset
 		rand = new Random();
-		point = new Point((rand.nextInt(25) * Item.SIZE)
-				+ Gamepanel.gameAreaXoffset,
-				(rand.nextInt(25) * Item.SIZE)
-						+ Gamepanel.gameAreaYoffset);
+		point = new Point((rand.nextInt(25) * Item.SIZE) + Gamepanel.gameAreaXoffset, (rand.nextInt(25) * Item.SIZE) + Gamepanel.gameAreaYoffset);
 		x = point.x;
 		y = point.y;
 

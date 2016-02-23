@@ -21,8 +21,10 @@ import javax.swing.Timer;
 public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 	// Variables
-	private static final long serialVersionUID = 5385848097769207171L;
 
+	public static final int gameAreaXoffset = 50;
+	public static final int gameAreaYoffset = 50;
+	
 	private int score;
 	private int collision_x;
 	private int collision_y;
@@ -34,23 +36,18 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 	private BufferedImage bg_image;
 	private Snake snake;
 	private MusicManager musicMan;
-	public static final int gameAreaXoffset = 50;
-	public static final int gameAreaYoffset = 50;
 	private Item item;
-	//private Point[][] gameArea = new Point[25][25]; this is for testing grid
 
-	// Constructor. Add timer and keylistener to panel. Initialize the snake and
-	// the apple.
+
 
 	public Gamepanel() {
-		super(true); // set double buffer for JPanel
+		super(true); 
 		addKeyListener(this);
-		t = new Timer(80, this); // Swingtimer 100millis
+		t = new Timer(80, this); 
 
 		// Initialize objects and the controller thread
 		musicMan = new MusicManager();
 		snake = new Snake();
-		//apple = new Apple();
 		item = new Apple();
 		highscore = new Highscore();
 		(new Thread(new USBController())).start();
@@ -64,14 +61,6 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		t.start();
 		musicMan.loopPlaying();
-		
-
-//		for (int i = 0; i < gameArea.length; i++) {
-//			for (int j = 0; j < gameArea[i].length; j++) {
-//				gameArea[i][j] = new Point(i * Snake.SQUARE_SIZE, j
-//						* Snake.SQUARE_SIZE);
-//			}
-//		}
 
 	}
 
@@ -99,71 +88,47 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.setColor(Color.GREEN);
 		graphics2D.drawString("SNAKE GAME", 200, 40);
 
-//		// Visualize game area grid for testing
-//		for (int i = 0; i < gameArea.length; i++) {
-//			for (int j = 0; j < gameArea[i].length; j++) {
-//				graphics2D.setColor(Color.RED);
-//				graphics2D.drawRect(gameArea[i][j].x + gameAreaXoffset,
-//						gameArea[i][j].y + gameAreaYoffset, Snake.SQUARE_SIZE,
-//						Snake.SQUARE_SIZE);
-//			}
-//		}
 
 		// Loop through the snake and draw the pieces
 		for (int i = snake.getSnakeArray().size() - 1; i >= 0; i--) {
 			graphics2D.setColor(Color.GREEN);
-			graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake
-					.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-					Snake.SQUARE_SIZE, 10, 10);
+			graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 			// Create spacing between snake pieces
 			graphics2D.setColor(new Color(1, 117, 1));
-			graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake
-					.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-					Snake.SQUARE_SIZE, 10, 10);
+			graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 			if (i != 0) {
-				snake.getSnakeArray().get(i).x = snake.getSnakeArray().get(
-						i - 1).x;
-				snake.getSnakeArray().get(i).y = snake.getSnakeArray().get(
-						i - 1).y;
+				snake.getSnakeArray().get(i).x = snake.getSnakeArray().get(i - 1).x;
+				snake.getSnakeArray().get(i).y = snake.getSnakeArray().get(i - 1).y;
 			}
 		}
 
-		// Detect collision with the snake itself. Turns the snake piece yellow
-		// which you've it.
+		// Detect collision with the snake itself.
 		for (int i = snake.getSnakeArray().size() - 1; i > 2; i--) {
 
-			if (snake.getSnakeArray().get(0).x == snake.getSnakeArray().get(i).x
-					&& snake.getSnakeArray().get(0).y == snake.getSnakeArray()
-							.get(i).y) {
+			if (snake.getSnakeArray().get(0).x == snake.getSnakeArray().get(i).x && snake.getSnakeArray().get(0).y == snake.getSnakeArray().get(i).y) {
 				gameRunning = false;
 				musicMan.stopPlaying();
 
 				// Turn the piece yellow
 				graphics2D.setColor(Color.YELLOW);
-				graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake
-						.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-						Snake.SQUARE_SIZE, 10, 10);
+				graphics2D.fillRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 				// Create spacing to the yellow piece.
 				graphics2D.setColor(new Color(1, 117, 1));
-				graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake
-						.getSnakeArray().get(i).y, Snake.SQUARE_SIZE,
-						Snake.SQUARE_SIZE, 10, 10);
+				graphics2D.drawRoundRect(snake.getSnakeArray().get(i).x, snake.getSnakeArray().get(i).y, Snake.SQUARE_SIZE, Snake.SQUARE_SIZE, 10, 10);
 
 				// Game over text
 				graphics2D.setColor(Color.RED);
-				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD,
-						23));
+				graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 				graphics2D.drawString("Game Over!", 200, 300);
 				highscore.setScore(score);
 				t.stop();
 			}
 		}
 
-		// Detect collision with an apple and grow the snake by 1 piece. Add 10
-		// to score. Store collision coords for
+		// Detect collision with an apple and grow the snake by 1 piece.
 		if (snake.getSnakeArray().get(0).x <= item.getX() + 15
 				&& snake.getSnakeArray().get(0).x >= item.getX() - 15
 				&& snake.getSnakeArray().get(0).y <= item.getY() + 15
@@ -221,26 +186,20 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 		graphics2D.drawString("Score: " + score, 400, 85);
 
 		// Detect collision with the wall x-wise
-		if (snake.getSnakeArray().get(0).x > 500 + gameAreaXoffset
-				- Snake.SQUARE_SIZE
-				|| snake.getSnakeArray().get(0).x < 0 + gameAreaXoffset) {
+		if (snake.getSnakeArray().get(0).x > 500 + gameAreaXoffset - Snake.SQUARE_SIZE || snake.getSnakeArray().get(0).x < 0 + gameAreaXoffset) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
-			graphics2D
-					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 200, 300);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
 			t.stop();
 		}
 		// Detect collision with the wall y-wise
-		if (snake.getSnakeArray().get(0).y > 500 + gameAreaYoffset
-				- Snake.SQUARE_SIZE
-				|| snake.getSnakeArray().get(0).y < 0 + gameAreaYoffset) {
+		if (snake.getSnakeArray().get(0).y > 500 + gameAreaYoffset - Snake.SQUARE_SIZE || snake.getSnakeArray().get(0).y < 0 + gameAreaYoffset) {
 			gameRunning = false;
 			graphics2D.setColor(Color.RED);
-			graphics2D
-					.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
+			graphics2D.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 23));
 			graphics2D.drawString("Game Over!", 200, 300);
 			musicMan.stopPlaying();
 			highscore.setScore(score);
