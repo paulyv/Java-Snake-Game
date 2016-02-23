@@ -86,8 +86,6 @@ public class Gamepanel extends JPanel implements ActionListener, KeyListener {
 
 		graphics2D.setFont(new Font("Tahoma", Font.BOLD, 30));
 		graphics2D.setColor(Color.GREEN);
-		graphics2D.drawString("SNAKE GAME", 200, 40);
-
 
 		// Loop through the snake and draw the pieces
 		for (int i = snake.getSnakeArray().size() - 1; i >= 0; i--) {
